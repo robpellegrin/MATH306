@@ -54,7 +54,12 @@
 \section*{Abstract}
 \begin{singlespace}
     \noindent
-    150 to 250 words summarizing project, goals, methodology, and key findings.
+    This project investigates the performance benefits of parallel and distributed computing techniques applied to two fundamental linear algebra operations:
+    LU Decomposition and matrix multiplication. The algorithms are first implemented serially in C++, then enhanced using OpenMP for shared-memory parallelism
+    and MPI for distributed computing. To provide a broader comparison, both serial and parallel versions of the same algorithms are also implemented in Rust.
+    Performance benchmarks across varying matrix sizes are used to evaluate speedup, scalability, and efficiency within each approach.
+    The results provide insight into the comparative strengths of C++ and Rust for high-performance scientific computing, and the effectiveness of OpenMP and
+    MPI for parallelizing computationally intensive tasks.
 \end{singlespace}
 
 % Begin main content
