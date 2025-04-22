@@ -1,11 +1,11 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Project Title : Final Project Report 
+% Project Title : Parallel Methods in Linear Algebra
 % Author        : Robert Pellegrin
 % Date          : April 16, 2025
 % Course        : MATH306 - Linear Algebra
 % Instructor    : Dr. Spickler
 % Description   : This document is the final report for the course project.
-%                 It includes abstract, background, methods, results, 
+%                 It includes abstract, background, methods, results,
 %                 and future work in standard research paper format.
 % 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -20,6 +20,7 @@
 \usepackage{fancyhdr}
 \usepackage{caption}
 \usepackage{float}
+
 
 \setlength{\parindent}{0pt} % No indenting
 \setstretch{1.0} % Single spacing
@@ -42,7 +43,6 @@
     \vspace*{2in}
     {\Huge\bfseries Parallel Methods in Linear Algebra\par}
     \vspace{1in}
-    {\Large Aidan Levy \par}
     {\Large Robert Pellegrin\par}
     \vspace{0.5in}
     {\large MATH 306\\ Dr.\ Spickler \\ Date\par}
@@ -53,21 +53,136 @@
 \newpage
 \section*{Abstract}
 \begin{singlespace}
-    \noindent
-    This project investigates the performance benefits of parallel and distributed computing techniques applied to two fundamental linear algebra operations:
-    LU Decomposition and matrix multiplication. The algorithms are first implemented serially in C++, then enhanced using OpenMP for shared-memory parallelism
-    and MPI for distributed computing. To provide a broader comparison, both serial and parallel versions of the same algorithms are also implemented in Rust.
-    Performance benchmarks across varying matrix sizes are used to evaluate speedup, scalability, and efficiency within each approach.
-    The results provide insight into the comparative strengths of C++ and Rust for high-performance scientific computing, and the effectiveness of OpenMP and
-    MPI for parallelizing computationally intensive tasks.
+    This project explores the performance of serial and parallel implementations of two core linear algebra operations: \textbf{matrix multiplication}
+    and \textbf{LU decomposition}. These algorithms were implemented in both C++ and Rust, allowing for a comparison of not only parallel speedup but
+    also language-level performance differences. The matrix multiplication was done using the standard three-loop algorithm, while LU decomposition
+    was implemented with partial pivoting and rounding of very small values to zero to reduce numerical errors.
+
+    \vspace{1em}
+
+    Parallel versions were created using OpenMP in C++ and the Rayon library in Rust, both of which enable shared-memory parallelism with minimal
+    code changes. Performance testing was conducted on square matrices of increasing sizes, with execution times recorded and averaged across
+    multiple runs to ensure consistency. The results were then analyzed to evaluate the benefits of parallelism and to compare how each language
+    handles high-performance numerical computing tasks.
+
+    \vspace{1em}
+
+    By benchmarking both serial and parallel variants in each language, this project aims to provide insights into the trade-offs between ease of
+    implementation, execution speed, and scalability when working with computationally intensive linear algebra algorithms.
 \end{singlespace}
 
 % Begin main content
 \section{Background and Motivation}
-Background context and why this project is important or interesting. Describe the problem being addressed.
+\begin{singlespace}
 
-\section{Methods and Tools}
-Explain methodology: approached to project, tools or frameworks used, and any assumptions or constraints.
+    Linear algebra is incredibly important in computer science and related fields, from graphics and machine learning to scientific simulations.
+    Two common but computationally intensive tasks in linear algebra are matrix multiplication and LU decomposition. Matrix multiplication is fundamental
+    in areas like computer graphics, graph theory, and neural networks, while LU decomposition helps us solve systems of equations
+    efficiently---something critical in science, engineering, and computing.
+
+    \vspace{1em}
+
+    Even though these operations are conceptually straightforward, performing them on large matrices can become extremely slow when using a simple,
+    one-step-at-a-time (serial) approach. As the amount of data gets bigger, serial implementations of these algorithms can become too slow to remain practical. This is
+    where parallel computing becomes interesting---by running computations simultaneously on a multi-core CPU, we can potentially
+    achieve big improvements in speed.
+
+    \vspace{1em}
+
+    This project focuses on implementing and comparing serial and parallel versions of matrix multiplication and LU decomposition. Specifically,
+    I'm using two popular programming languages: C++ and Rust. C++ has long been favored for performance-sensitive tasks because it offers powerful
+    tools for optimization. Rust, though newer, has gained popularity due to its built-in safety features and strong performance, sometimes outperforming
+    older languages in efficiency and speed.
+
+    \vspace{1em}
+
+    By writing and benchmarking serial and parallel versions of these algorithms in both languages, I want to answer two key questions:
+
+    \begin{itemize}
+        \item{}
+        How much faster are parallel versions of these algorithms compared to their serial counterparts?
+        \item{}
+        Does the choice of programming language (C++ versus Rust) significantly impact the performance?
+    \end{itemize}
+
+    This comparison is useful because, as computing increasingly moves toward multi-core processors, it's essential to know which languages and methods can
+    best take advantage of this hardware. The results could help guide decisions in future projects, especially when performance is critical.
+\end{singlespace}
+
+
+\section{Methods \& Tools}
+
+This project involved implementing two fundamental linear algebra algorithms---\textbf{matrix multiplication} and \textbf{LU decomposition}---in both
+serial and parallel forms, using two different programming languages: \textbf{C++} and \textbf{Rust}. The goal was to explore not only how parallelism
+improves performance, but also how the choice of language affects execution time and overall efficiency.
+
+\subsection*{Matrix Multiplication}
+
+For matrix multiplication, I used the standard algorithm involving three nested loops. Given two matrices, \( A \) and \( B \), the resulting matrix
+\( C \) is calculated such that each element \( C_{ij} \) is the sum of products of the elements from the corresponding row of \( A \) and column of
+\( B \):
+
+\[
+    C_{ij} = \sum_{k=1}^{n} A_{ik} \times B_{kj}
+\]
+
+This method is simple and easy to implement, but it can become computationally expensive for large matrices. To improve performance, I implemented a
+parallel version where the outer loop (over rows of the result matrix) is divided across threads. In C++, this was done using \textbf{OpenMP}, which
+makes it relatively straightforward to parallelize loops using \texttt{\#pragma omp parallel for}. In Rust, I used the \textbf{Rayon} library, which
+provides an easy-to-use \texttt{par\_iter()} API to parallelize iterators safely and efficiently.
+
+Each implementation was tested with square matrices of varying sizes (e.g., 100$\times$100, 500$\times$500, 1000$\times$1000, etc.), and timing was
+recorded to observe how execution time scaled with matrix size and how the parallel versions compared to the serial ones.
+
+\subsection*{LU Decomposition}
+
+LU decomposition is used to factor a matrix \( A \) into the product of a lower triangular matrix \( L \) and an upper triangular matrix \( U \), such
+that \( A = LU \). I implemented this algorithm using \textbf{partial pivoting}, which helps maintain numerical stability by selecting the largest available
+pivot element and swapping rows when needed. This avoids dividing by very small numbers, which can cause large rounding errors.
+
+To further reduce rounding issues, I added a small threshold (e.g., \(1 \times 10^{-10}\)) below which values are rounded to zero. This helps eliminate nonsense
+introduced by floating-point arithmetic when working with real numbers in the decomposition.
+
+Parallelizing LU decomposition is more complex than matrix multiplication due to dependencies between rows during the elimination phase. In the parallel version,
+I parallelized the row elimination steps after the pivot has been selected. Again, OpenMP was used in C++ to parallelize the inner loops, while in Rust, Rayon's
+parallel iterators were used to process multiple rows in parallel. Care was taken to ensure synchronization around shared data to avoid race conditions,
+especially when updating pivot rows and performing row swaps.
+
+\subsection*{Languages \& Libraries}
+
+I chose \textbf{C++} for its long-standing reputation in high-performance computing, and \textbf{Rust} for its modern design, strong memory safety guarantees,
+and native support for concurrency. The tools and libraries used include:
+
+\begin{itemize}
+    \item \textbf{C++}
+          \begin{itemize}
+              \item GCC compiler with optimization flags (\texttt{-O2}, \texttt{-fopenmp})
+              \item OpenMP for parallelism
+              \item \texttt{chrono} library for timing
+          \end{itemize}
+
+    \item \textbf{Rust}
+          \begin{itemize}
+              \item Stable Rust compiler (\texttt{cargo})
+              \item Rayon crate for data-parallelism
+              \item \texttt{std::time::Instant} for timing
+          \end{itemize}
+\end{itemize}
+
+Both versions of the code were tested on the same machine to ensure consistent comparisons. I also wrote basic matrix generators and along with various
+sanity-checking functions to verify the correctness of the algorithms by comparing outputs from serial and parallel versions.
+
+\subsection*{Performance Measurement}
+
+Execution time was the primary metric used to compare the performance of different implementations. Each program was run multiple times, and the average
+runtime was recorded to minimize variance caused by system processes or hardware interruptions. Results were organized in tables and plotted to visualize
+the differences between serial and parallel execution, as well as between C++ and Rust implementations.
+
+To help automate the benchmarking process, I wrote a Bash script that incrementally increased the matrix size passed to each program. This script looped
+through a range of sizes (e.g., from 100 to 10000, increasing by 100 each time), called the appropriate executable, and captured the runtime output.
+Automating this step not only ensured consistency across runs but also made it easier to test a broad range of input sizes without manually rerunning
+each test.
+
 
 \section{Results}
 Discuss findings, show some figures, tables, and/or code snippets.
@@ -84,16 +199,66 @@ Explain results in context stated goals.
 
 
 \section{Summary and Future Work}
-Summarize the work you've done and its significance. Discuss what could be explored further or improved upon in future work.
+While this project focused on matrix multiplication and LU decomposition, there are many other linear algebra algorithms that could benefit significantly
+from parallelization. Expanding the scope of this work to include additional algorithms would offer a more comprehensive understanding of where parallel
+computing provides the most value in scientific and mathematical computing.
+
+\vspace{1em}
+
+
+One natural extension would be to explore \textbf{QR decomposition} and \textbf{Cholesky decomposition}, both of which are used in numerical analysis,
+machine learning, and solving systems of equations. These algorithms involve matrix transformations that are computationally intensive and contain
+steps that could be parallelized similarly to LU decomposition. Another candidate is the \textbf{Singular Value Decomposition (SVD)}, which is widely
+used in data science and dimensionality reduction. Although more complex, it presents a great opportunity for parallel optimization due to the large number
+of operations involved.
+
+\vspace{1em}
+
+Beyond algorithm selection, there are also more advanced parallelization techniques that could be explored. In this project, shared-memory
+parallelism was used via OpenMP in C++ and the Rayon library in Rust. However, these approaches are limited by the number of CPU cores available.
+To push performance further, especially for large matrix sizes, \textbf{GPU acceleration} using technologies like \textbf{NVIDIA CUDA} could be
+highly effective. GPUs are well-suited for linear algebra due to their high number of processing cores and fast context switching, allowing massive
+numbers of computations to run in parallel.
+
+\vspace{1em}
+
+In the Rust ecosystem, GPU programming is still emerging, but there are crates like \texttt{cust} (a CUDA wrapper) that can be used to write Rust
+programs that run directly on the GPU. Exploring how GPU-based matrix operations in Rust compare to traditional CPU-based ones would be a valuable
+next step. Similarly, \textbf{SIMD} (Single Instruction, Multiple Data) is another performance optimization strategy worth considering. SIMD allows
+a single instruction to operate on multiple data points at once, which is perfect for vector and matrix computations. Rust has libraries like
+\texttt{wide} and \texttt{std::simd} (which is still in development) that provide abstractions for SIMD programming and could significantly boost the
+performance of both serial and parallel implementations.
+
+\vspace{1em}
+
+Another area of interest would be to look at \textbf{distributed computing} approaches for extremely large datasets that don't fit into memory on a
+single machine. While this project didn't include MPI, revisiting distributed memory parallelism could provide insight into scaling linear algebra computations beyond a single workstation.
+
+\vspace{1em}
+
+Lastly, deeper numerical accuracy analysis and profiling could be explored. Comparing how different languages and approaches handle
+floating-point errors or identifying performance bottlenecks at the instruction level using profiling tools like \texttt{gprof}, \texttt{perf}, or
+Rust's \texttt{flamegraph} crate could provide more technical depth and further guide optimization efforts.
+
+\vspace{1em}
+
+In summary, while this project lays a solid foundation for understanding parallelism in matrix operations, there is much room for future work in exploring
+additional algorithms, more advanced hardware acceleration techniques, and deeper performance analysis.
+
 
 % Begin Bibliography
 \newpage
 \begin{thebibliography}{9}
-    \bibitem{example1}
-    Author Name, \textit{Title of Paper or Book}, Publisher or Journal, Year.
+    \bibitem{openmpSpec2020}
+    OpenMP Architecture Review Board, \textit{OpenMP Application Programming Interface Version 5.1},
+    \url{https://www.openmp.org/specifications/}, 2020.
 
-    \bibitem{example2}
-    Author Name, \textit{Title}, Website or Conference, URL, Year.
+    \bibitem{rayonGitHub}
+    Niko Matsakis and Rayon Contributors, \textit{Rayon: A data parallelism library for Rust},
+    \url{https://github.com/rayon-rs/rayon}, Accessed 2025.
+
+    \bibitem{rayonDocs}
+    Rayon Contributors, \textit{Rayon Crate Documentation}, \url{https://docs.rs/rayon/latest/rayon/}, Accessed 2025.
 \end{thebibliography}
 
 \end{document}
