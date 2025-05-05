@@ -13,7 +13,10 @@
  */
 
 use rand::Rng;
+use rayon::prelude::*;
+use std::env;
 use std::f64;
+use std::process;
 use std::time::Instant;
 
 type Matrix = Vec<Vec<f64>>;
@@ -31,6 +34,66 @@ struct LUResult {
 /// Rounds values close to zero to exactly zero for cleaner output
 fn round_to_zero(value: f64) -> f64 {
     if value.abs() < EPSILON { 0.0 } else { value }
+}
+
+/// Parallel LU decomposition with partial pivoting using Rayon
+fn lu_decompose_parallel(a: &Matrix) -> Result<LUResult, String> {
+    let n = a.len();
+    if n == 0 || a.iter().any(|row| row.len() != n) {
+        return Err("Matrix must be square.".to_string());
+    }
+
+    let mut l = vec![vec![0.0; n]; n];
+    let mut u = a.clone();
+    let mut p = vec![vec![0.0; n]; n];
+
+    // Identity matrix
+    for i in 0..n {
+        p[i][i] = 1.0;
+    }
+
+    for k in 0..n {
+        // Pivot selection
+        let mut max_row = k;
+        let mut max_val = u[k][k].abs();
+        for i in (k + 1)..n {
+            if u[i][k].abs() > max_val {
+                max_val = u[i][k].abs();
+                max_row = i;
+            }
+        }
+
+        if max_val < EPSILON {
+            return Err("Matrix is singular or nearly singular.".to_string());
+        }
+
+        // Swap rows
+        if max_row != k {
+            u.swap(k, max_row);
+            p.swap(k, max_row);
+            l.swap(k, max_row);
+        }
+
+        l[k][k] = 1.0;
+
+        let uk_row = u[k].clone(); // fixed row
+        let u_slice = &mut u[(k + 1)..n];
+        let l_slice = &mut l[(k + 1)..n];
+
+        // SAFELY parallelize over (k+1)..n rows
+        u_slice
+            .par_iter_mut()
+            .zip(l_slice.par_iter_mut())
+            .for_each(|(u_row, l_row)| {
+                let factor = u_row[k] / uk_row[k];
+                l_row[k] = factor;
+                for j in k..n {
+                    u_row[j] -= factor * uk_row[j];
+                }
+            });
+    }
+
+    Ok(LUResult { p, l, u })
 }
 
 /// Performs LU decomposition with partial pivoting
@@ -172,17 +235,40 @@ fn print_matrix_diff(a: &Matrix, b: &Matrix) {
     println!();
 }
 
-/// Main program entry point
+// Main
 fn main() {
-    let n = 500;
+    let args: Vec<String> = env::args().collect();
+
+    // Get the matrix size from command-line args, or default to 500
+    let n: usize = if args.len() > 1 {
+        match args[1].parse() {
+            Ok(val) => val,
+            Err(_) => {
+                eprintln!("Invalid matrix size: {}", args[1]);
+                process::exit(1);
+            }
+        }
+    } else {
+        500
+    };
+
+    println!("Generating random {}x{} matrix...", n, n);
     let a = generate_random_matrix(n);
-    
+
     let start = Instant::now();
-    let result = lu_decompose(&a);
+    let result = lu_decompose(&a); // lu_decompose(&a)
     let duration = start.elapsed();
+    
+    let secs = duration.as_secs();
+    let millis = duration.subsec_millis();
+    let minutes = secs / 60;
+    let seconds = secs % 60;
 
     match result {
-        Ok(_) => println!("LU decomposition took: {:.6?}", duration),
+        Ok(_) => println!(
+            "LU decomposition took: {} min {}.{:03} sec",
+            minutes, seconds, millis
+        ),
         Err(e) => println!("Error: {}", e),
     }
 }
