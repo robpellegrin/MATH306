@@ -10,7 +10,7 @@ PROG_NAME = $(shell basename $(PWD))
 # Compiler to use.
 CC = g++ 
 # Compile-time flags.
-CPPFLAGS = -Wall -Wextra -Wuninitialized -fopenmp -lgmp
+CPPFLAGS = -O3 -march=native -flto -funroll-loops -DNDEBUG -std=c++20 -fopenmp 
 # Link-time flags.
 LDFLAGS = -fopenmp -lgmp 
 
