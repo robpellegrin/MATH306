@@ -1,0 +1,29 @@
+Running rust-lu-decomp-serial with size 1000 (Iteration 1)
+LU decomposition took: 0 min 1.334 sec
+
+Running rust-lu-decomp-serial with size 2000 (Iteration 2)
+LU decomposition took: 0 min 11.389 sec
+
+Running rust-lu-decomp-serial with size 3000 (Iteration 3)
+LU decomposition took: 0 min 39.204 sec
+
+Running rust-lu-decomp-serial with size 4000 (Iteration 4)
+LU decomposition took: 1 min 19.375 sec
+
+Running rust-lu-decomp-serial with size 5000 (Iteration 5)
+LU decomposition took: 2 min 23.087 sec
+
+Running rust-lu-decomp-serial with size 6000 (Iteration 6)
+LU decomposition took: 3 min 52.670 sec
+
+Running rust-lu-decomp-serial with size 7000 (Iteration 7)
+LU decomposition took: 5 min 53.848 sec
+
+Running rust-lu-decomp-serial with size 8000 (Iteration 8)
+LU decomposition took: 8 min 19.401 sec
+
+Running rust-lu-decomp-serial with size 9000 (Iteration 9)
+LU decomposition took: 11 min 33.204 sec
+
+Running rust-lu-decomp-serial with size 10000 (Iteration 10)
+LU decomposition took: 15 min 17.972 sec

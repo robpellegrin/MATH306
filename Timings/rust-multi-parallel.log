@@ -1,0 +1,29 @@
+Using matrix size: 1000x1000
+Parallel multiplication took: 0 min 0.189 sec
+
+Using matrix size: 2000x2000
+Parallel multiplication took: 0 min 1.862 sec
+
+Using matrix size: 3000x3000
+Parallel multiplication took: 0 min 6.670 sec
+
+Using matrix size: 4000x4000
+Parallel multiplication took: 0 min 16.917 sec
+
+Using matrix size: 5000x5000
+Parallel multiplication took: 0 min 35.462 sec
+
+Using matrix size: 6000x6000
+Parallel multiplication took: 1 min 7.482 sec
+
+Using matrix size: 7000x7000
+Parallel multiplication took: 2 min 6.296 sec
+
+Using matrix size: 8000x8000
+Parallel multiplication took: 4 min 3.831 sec
+
+Using matrix size: 9000x9000
+Parallel multiplication took: 7 min 56.715 sec
+
+Using matrix size: 10000x10000
+Parallel multiplication took: 11 min 32.925 sec

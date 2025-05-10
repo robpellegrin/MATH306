@@ -1,0 +1,29 @@
+Running rust-multi-serial with size 1000 (Iteration 1)
+Serial multiplication took: 0 min 2.358 sec
+
+Running rust-multi-serial with size 2000 (Iteration 2)
+Serial multiplication took: 0 min 43.370 sec
+
+Running rust-multi-serial with size 3000 (Iteration 3)
+Serial multiplication took: 2 min 24.719 sec
+
+Running rust-multi-serial with size 4000 (Iteration 4)
+Serial multiplication took: 5 min 46.123 sec
+
+Running rust-multi-serial with size 5000 (Iteration 5)
+Serial multiplication took: 10 min 19.362 sec
+
+Running rust-multi-serial with size 6000 (Iteration 6)
+Serial multiplication took: 19 min 4.604 sec
+
+Running rust-multi-serial with size 7000 (Iteration 7)
+Serial multiplication took: 32 min 33.340 sec
+
+Running rust-multi-serial with size 8000 (Iteration 8)
+Serial multiplication took: 49 min 21.973 sec
+
+Running rust-multi-serial with size 9000 (Iteration 9)
+Serial multiplication took: 73 min 20.203 sec
+
+Running rust-multi-serial with size 10000 (Iteration 10)
+Serial multiplication took: 100 min 16.929 sec

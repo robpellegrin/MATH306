@@ -1,0 +1,29 @@
+LU Decomp (1000) --> OMP
+Elapsed time: 0 minutes and 0 seconds
+
+LU Decomp (2000) --> OMP
+Elapsed time: 0 minutes and 1 seconds
+
+LU Decomp (3000) --> OMP
+Elapsed time: 0 minutes and 6 seconds
+
+LU Decomp (4000) --> OMP
+Elapsed time: 0 minutes and 15 seconds
+
+LU Decomp (5000) --> OMP
+Elapsed time: 0 minutes and 30 seconds
+
+LU Decomp (6000) --> OMP
+Elapsed time: 0 minutes and 52 seconds
+
+LU Decomp (7000) --> OMP
+Elapsed time: 1 minutes and 22 seconds
+
+LU Decomp (8000) --> OMP
+Elapsed time: 2 minutes and 2 seconds
+
+LU Decomp (9000) --> OMP
+Elapsed time: 2 minutes and 54 seconds
+
+LU Decomp (10000) --> OMP
+Elapsed time: 3 minutes and 59 seconds

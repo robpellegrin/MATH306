@@ -1,0 +1,29 @@
+Running Matrix-CPP-Multi-Serial with size 1000 (Iteration 1)
+Elapsed time: 0 minutes and 4 seconds
+
+Running Matrix-CPP-Multi-Serial with size 2000 (Iteration 2)
+Elapsed time: 2 minutes and 41 seconds
+
+Running Matrix-CPP-Multi-Serial with size 3000 (Iteration 3)
+Elapsed time: 9 minutes and 34 seconds
+
+Running Matrix-CPP-Multi-Serial with size 4000 (Iteration 4)
+Elapsed time: 19 minutes and 20 seconds
+
+Running Matrix-CPP-Multi-Serial with size 5000 (Iteration 5)
+Elapsed time: 36 minutes and 45 seconds
+
+Running Matrix-CPP-Multi-Serial with size 6000 (Iteration 6)
+Elapsed time: 51 minutes and 8 seconds
+
+Running Matrix-CPP-Multi-Serial with size 7000 (Iteration 7)
+Elapsed time: 76 minutes and 54 seconds
+
+Running Matrix-CPP-Multi-Serial with size 8000 (Iteration 8)
+Elapsed time: 111 minutes and 48 seconds
+
+Running Matrix-CPP-Multi-Serial with size 9000 (Iteration 9)
+Elapsed time: 391 minutes and 32 seconds
+
+Running Matrix-CPP-Multi-Serial with size 10000 (Iteration 10)
+Elapsed time: 532 minutes and 15 seconds

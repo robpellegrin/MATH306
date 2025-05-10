@@ -1,0 +1,29 @@
+Matrix Multi (1000) --> OMP
+Elapsed time: 0 minutes and 0 seconds
+
+Matrix Multi (2000) --> OMP
+Elapsed time: 0 minutes and 2 seconds
+
+Matrix Multi (3000) --> OMP
+Elapsed time: 0 minutes and 9 seconds
+
+Matrix Multi (4000) --> OMP
+Elapsed time: 0 minutes and 29 seconds
+
+Matrix Multi (5000) --> OMP
+Elapsed time: 1 minutes and 5 seconds
+
+Matrix Multi (6000) --> OMP
+Elapsed time: 2 minutes and 8 seconds
+
+Matrix Multi (7000) --> OMP
+Elapsed time: 3 minutes and 42 seconds
+
+Matrix Multi (8000) --> OMP
+Elapsed time: 5 minutes and 50 seconds
+
+Matrix Multi (9000) --> OMP
+Elapsed time: 35 minutes and 10 seconds
+
+Matrix Multi (10000) --> OMP
+Elapsed time: 51 minutes and 36 seconds
