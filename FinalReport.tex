@@ -20,8 +20,6 @@
 \usepackage{caption}
 \usepackage{float}
 
-
-
 % Header/Footer
 \pagestyle{fancy}
 \fancyhf{}
@@ -85,21 +83,15 @@ Two common but computationally intensive tasks in linear algebra are matrix mult
 in areas like computer graphics, graph theory, and neural networks, while LU decomposition helps us solve systems of equations
 efficiently---something critical in science, engineering, and computing.
 
-\parskip=1em
-
 Even though these operations are conceptually straightforward, performing them on large matrices can become extremely slow when using a simple,
 one-step-at-a-time (serial) approach. As the amount of data gets bigger, serial implementations of these algorithms can become too slow to remain practical. This is
 where parallel computing becomes interesting---by running computations simultaneously on a multi-core CPU, we can potentially
 achieve big improvements in speed.
 
-\parskip=1em
-
 This project focuses on implementing and comparing serial and parallel versions of matrix multiplication and LU decomposition. Specifically,
 I'm using two popular programming languages: C++ and Rust. C++ has long been favored for performance-sensitive tasks because it offers powerful
 tools for optimization. Rust, though newer, has gained popularity due to its built-in safety features and strong performance, sometimes outperforming
 older languages in efficiency and speed.
-
-\parskip=1em
 
 By writing and benchmarking serial and parallel versions of these algorithms in both languages, the goal is to answer two key questions:
 
@@ -118,7 +110,7 @@ This project involved implementing two fundamental linear algebra algorithms---\
 serial and parallel forms, using two different programming languages: \textbf{C++} and \textbf{Rust}. The goal was to explore not only how parallelism
 improves performance, but also how the choice of language affects execution time and overall efficiency.
 
-\subsection*{Matrix Multiplication}
+\subsection{Matrix Multiplication}
 
 Matrix multiplication in this project was implemented using the standard algorithm involving three nested loops. Given two matrices, \( A \) and \( B \),
 the resulting matrix \( C \) is computed such that each element \( C_{ij} \) is the sum of products between the elements in the \( i \)-th row of \( A \)
@@ -137,11 +129,11 @@ result matrix) across multiple threads. In C++, parallelization was achieved usi
 the \texttt{\#pragma omp parallel for} directive. In Rust, the \textbf{Rayon} library was used to safely and efficiently parallelize iteration using
 the \texttt{par\_iter()} API.
 
-The algorithm was tested on square matrices of various sizes (e.g., \(100 \times 100\), \(500 \times 500\), \(1000 \times 1000\), etc.), and execution
+The algorithm was tested on square matrices of various sizes (e.g., \(1000 \times 1000\), \(2000 \times 2000\), \(3000 \times 3000\), etc.), and execution
 times were recorded to observe how performance scaled with input size and to evaluate the speedup achieved by the parallel implementations compared to
 their serial counterparts.
 
-\subsection*{LU Decomposition}
+\subsection{LU Decomposition}
 The LU decomposition algorithm with partial pivoting has a time complexity of \( \mathcal{O}(n^3) \), where \( n \) is the size of the square matrix.
 This complexity arises from the nested loop structure used to eliminate entries below the main diagonal and construct the lower and upper triangular matrices.
 As matrix size increases, the computational cost becomes substantial, making parallelization of the elimination phase especially valuable.
@@ -161,7 +153,7 @@ Although more advanced or block-based LU algorithms with improved cache utilizat
 project due to its simplicity and suitability for evaluating serial and parallel implementations in both C++ and Rust.
 
 
-\subsection*{Languages \& Libraries}
+\subsection{Languages \& Libraries}
 
 \textbf{C++} was chosen for its long-standing reputation in high-performance computing, and \textbf{Rust} for its modern design, strong memory safety guarantees,
 and native support for concurrency. The tools and libraries used include:
@@ -187,20 +179,20 @@ and native support for concurrency. The tools and libraries used include:
 \end{itemize}
 
 Both versions of the code were tested on the same machine to ensure consistent comparisons. Basic matrix generators along with various
-sanity-checking functions were used to verify the correctness of the algorithms by comparing outputs from serial and parallel versions.
+sanity-checking functions were used to verify the correctness of the algorithms before comparing the execution times.
 
 To ensure fair and efficient performance comparisons, compiler optimizations were enabled for both C++ and Rust builds. For the C++ programs,
 optimization flags  \texttt{-O2} and \texttt{-fopenmp} were used with the GCC compiler to improve execution speed and enable parallelization via OpenMP.
 In Rust, programs were compiled using the \texttt{--release} flag, which enables aggressive optimizations through LLVM, resulting in significantly faster
-runtime performance compared to (default) debug builds. These optimizations were necessary for obtaining realistic benchmark results, particularly when
-comparing serial and parallel execution times across both languages.
+runtime performance compared to (default) debug builds. These optimizations were necessary to make performance comparisons more meaningful, as programs
+compiled without compiler optimizations performed significantly worse—especially in the case of Rust.
 
 To reduce the time needed to collect results from the serial implementations of each algorithm, \textbf{GNU Parallel} was used to perform multiple test runs
 simultaneously across different CPU cores. Although each individual program was still running serially, running multiple instances at once allowed better
 utilization of available hardware resources during data collection, significantly reducing the total time required to benchmark all matrix sizes.
-GNU Parallel made it easy to queue up many independent executions while ensuring that system load remained reasonable.
+GNU Parallel made it easy to queue up many independent executions while ensuring that system load remained at a level that would not negatively impact performance.
 
-\subsection*{Performance Measurement}
+\subsection{Performance Measurement}
 
 Execution time was the primary metric used to compare the performance of different implementations. Each program was run multiple times, and the average
 of five runs was recorded to minimize variance caused by system processes or hardware interruptions. Results were organized in tables and plotted to visualize
@@ -212,8 +204,8 @@ Automating this step not only ensured consistency across runs but also made it e
 each test.
 
 \section{Results --- Matrix Multiplication}
-% \section*{Results}
-Performance testing was conducted on matrix multiplication implementations for both C++ and Rust, using serial and parallel versions. Timings were recorded for square matrices ranging from \(1000 \times 1000\) up to \(10000 \times 10000\).
+Performance testing was conducted on matrix multiplication implementations for both C++ and Rust, using serial and parallel versions.
+Timings were recorded for square matrices ranging from \(1000 \times 1000\) up to \(10000 \times 10000\).
 
 \begin{table}[H]
     \centering
@@ -239,7 +231,7 @@ Performance testing was conducted on matrix multiplication implementations for b
 \end{table}
 
 
-\subsection*{Rust Matrix Multiplication}
+\subsection{Rust Matrix Multiplication}
 
 In the Rust serial implementation, execution time grew significantly with matrix size, consistent with the expected \( \mathcal{O}(n^3) \) complexity.
 Multiplying two \(1000 \times 1000\) matrices took approximately 2.36 seconds, and multiplying \(10000 \times 10000\) matrices required about 100 minutes.
@@ -248,7 +240,7 @@ The parallel Rust implementation, using Rayon, showed substantial speedup at all
 was reduced from 100 minutes to approximately 11.5 minutes, demonstrating a major improvement. Even at smaller sizes, such as \(1000 \times 1000\), the
 parallel version completed in just 0.19 seconds.
 
-\subsection*{C++ Matrix Multiplication}
+\subsection{C++ Matrix Multiplication}
 
 The C++ serial implementation showed a similar growth trend but required more time than Rust across all matrix sizes. Multiplying \(1000 \times 1000\) matrices
 took about 4 seconds, while \(10000 \times 10000\) matrices required over 8.5 hours (approximately 532 minutes).
@@ -257,7 +249,7 @@ The parallel C++ implementation, using OpenMP, also significantly reduced execut
 matrices were completed in about 52 minutes, compared to 532 minutes serially. However, even with parallelization, the C++ implementation remained slower
 than the Rust parallel version at all tested sizes.
 
-\subsection*{Comparison and Observations}
+\subsection{Comparison and Observations}
 
 Across all matrix sizes and implementations, Rust consistently outperformed C++ in both serial and parallel executions. Rust's serial version was significantly
 faster than the C++ serial version, and its parallel implementation achieved even greater relative speedup compared to C++ with OpenMP.
@@ -294,7 +286,7 @@ Performance testing was conducted on LU decomposition implementations for both C
 \end{table}
 
 
-\subsection*{Rust LU Decomposition}
+\subsection{Rust LU Decomposition}
 
 In the Rust serial implementation, execution time increased rapidly with matrix size, consistent with the expected \( \mathcal{O}(n^3) \) complexity.
 Decomposing a \(1000 \times 1000\) matrix took approximately 1.33 seconds, while a \(10000 \times 10000\) matrix required about 15 minutes and 18 seconds.
@@ -303,7 +295,7 @@ The parallel Rust implementation, using the Rayon library, significantly reduced
 decomposition completed in under 2 minutes, a major improvement over the serial version. Even at smaller sizes, such as \(1000 \times 1000\), the parallel
 version completed in approximately 0.25 seconds.
 
-\subsection*{C++ LU Decomposition}
+\subsection{C++ LU Decomposition}
 
 The C++ serial LU decomposition implementation also exhibited a steep increase in execution time with matrix size. Decomposing a \(1000 \times 1000\) matrix
 took about 2 seconds, while a \(10000 \times 10000\) matrix required approximately 24 minutes and 52 seconds.
@@ -311,7 +303,7 @@ took about 2 seconds, while a \(10000 \times 10000\) matrix required approximate
 Parallelizing the C++ implementation using OpenMP significantly improved performance, particularly for larger matrices. For example, the decomposition of
 a \(10000 \times 10000\) matrix was completed in approximately 4 minutes in the parallel version, compared to nearly 25 minutes serially.
 
-\subsection*{Comparison and Observations}
+\subsection{Comparison and Observations}
 
 Rust consistently outperformed C++ in both serial and parallel LU decomposition timings. The Rust serial implementation was faster than the C++ serial
 implementation across all matrix sizes, and the parallel Rust version achieved even greater relative speedup compared to C++ with OpenMP.
@@ -344,23 +336,17 @@ While this project focused on matrix multiplication and LU decomposition, there 
 from parallelization. Expanding the scope of this work to include additional algorithms would offer a more comprehensive understanding of where parallel
 computing provides the most value in scientific and mathematical computing.
 
-\parskip=1em
-
 One natural extension would be to explore \textbf{QR decomposition} and \textbf{Cholesky decomposition}, both of which are used in numerical analysis,
 machine learning, and solving systems of equations. These algorithms involve matrix transformations that are computationally intensive and contain
 steps that could be parallelized similarly to LU decomposition. Another candidate is the \textbf{Singular Value Decomposition (SVD)}, which is widely
 used in data science and dimensionality reduction. Although more complex, it presents a great opportunity for parallel optimization due to the large number
 of operations involved.
 
-\parskip=1em
-
 Beyond algorithm selection, there are also more advanced parallelization techniques that could be explored. In this project, shared-memory
 parallelism was used via OpenMP in C++ and the Rayon library in Rust. However, these approaches are limited by the number of CPU cores available.
 To push performance further, especially for large matrix sizes, \textbf{GPU acceleration} using technologies like \textbf{NVIDIA CUDA} could be
 highly effective. GPUs are well-suited for linear algebra due to their high number of processing cores and fast context switching, allowing massive
 numbers of computations to run in parallel.
-
-\parskip=1em
 
 In the Rust ecosystem, GPU programming is still emerging, but there are crates like \texttt{cust} (a CUDA wrapper) that can be used to write Rust
 programs that run directly on the GPU. Exploring how GPU-based matrix operations in Rust compare to traditional CPU-based ones would be a valuable
@@ -369,18 +355,12 @@ a single instruction to operate on multiple data points at once, which is perfec
 \texttt{wide} and \texttt{std::simd} (which is still in development) that provide abstractions for SIMD programming and could significantly boost the
 performance of both serial and parallel implementations.
 
-\parskip=1em
-
 Another area of interest would be to look at \textbf{distributed computing} approaches for extremely large datasets that don't fit into memory on a
 single machine. While this project didn't include MPI, revisiting distributed memory parallelism could provide insight into scaling linear algebra computations beyond a single workstation.
 
-\parskip=1em
-
 Lastly, deeper numerical accuracy analysis and profiling could be explored. Comparing how different languages and approaches handle
-floating-point errors or identifying performance bottlenecks at the instruction level using profiling tools like \texttt{gprof}, \texttt{perf}, or
+floating-point errors or identifying performance bottlenecks at the instruction level using profiling tools like \texttt{gprof}, \texttt{perf} in C++, or
 Rust's \texttt{flamegraph} crate could provide more technical depth and further guide optimization efforts.
-
-\parskip=1em
 
 In summary, while this project lays a solid foundation for understanding parallelism in matrix operations, there is much room for future work in exploring
 additional algorithms, more advanced hardware acceleration techniques, and deeper performance analysis.
