@@ -58,8 +58,6 @@ class Matrix {
                           Matrix *);
   friend long double roundToZero(long double);
   friend ostream &operator<<(std::ostream &, const Matrix &);
-  friend ostream &operator<<(ostream &os, const mpq_class &q);
-  friend ostream &operator<<(ostream &os, const __mpq_struct *q);
 };
 
 #endif  // !MATRIX_HPP

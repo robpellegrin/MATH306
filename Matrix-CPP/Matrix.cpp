@@ -471,39 +471,3 @@ std::ostream &operator<<(std::ostream &stream, const Matrix &matrix) {
 
   return stream;
 }
-
-/**
- * @brief Overloaded stream out operator to print the GMP mpq_class object.
- *
- * This operator allows printing a mpq_class object (from the GMP library) to
- * an output stream. It converts the mpq_class object to a string using its
- * get_str() function and prints it to the stream.
- *
- * @param os The output stream to which the mpq_class object will be printed.
- * @param q The mpq_class object to be printed.
- * @return std::ostream& A reference to the output stream after printing the
- * mpq_class object.
- */
-std::ostream &operator<<(std::ostream &os, const mpq_class &q) {
-  return os << q.get_str();
-}
-
-/**
- * @brief Overloaded stream out operator to print the GMP __mpq_struct
- * pointer.
- *
- * This operator allows printing a pointer to a __mpq_struct (which represents
- * a rational number in GMP) to an output stream. The pointer is first
- * converted into a mpq_class object and then printed to the stream.
- *
- * @param os The output stream to which the __mpq_struct pointer will be
- * printed.
- * @param q The pointer to the __mpq_struct that will be converted and
- * printed.
- * @return std::ostream& A reference to the output stream after printing the
- * __mpq_struct pointer.
- */
-std::ostream &operator<<(std::ostream &os, const __mpq_struct *q) {
-  // Convert the pointer to a mpq_class object and insert it into the stream.
-  return os << mpq_class(q);
-}
