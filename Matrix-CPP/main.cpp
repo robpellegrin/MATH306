@@ -32,14 +32,11 @@ int main(int argc, char *argv[]) {
   }
 
   Matrix A(size, size);
-  cout << "Matrix Created!" << endl;
 
   // Record start time
   auto start = std::chrono::high_resolution_clock::now();
 
-  cout << "LU Decomp (" << size << ") --> OMP" << endl;
-  auto PLU = A.luDecompose_opm();
-  cout << "LU Decomp Finished!\n";
+  auto PLU = A.mul_omp(A);
 
   // Stop timer
   auto end = std::chrono::high_resolution_clock::now();
@@ -56,7 +53,7 @@ int main(int argc, char *argv[]) {
   );
 
   cout << "Elapsed time: " << minutes.count() << " minutes and "
-       << seconds.count() << " seconds\n";
+       << seconds.count() << " seconds" << endl;
 
   return 0;
 }
