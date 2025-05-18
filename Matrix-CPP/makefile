@@ -12,7 +12,7 @@ CC = g++
 # Compile-time flags.
 CPPFLAGS = -O3 -march=native -flto -funroll-loops -DNDEBUG -std=c++20 -fopenmp 
 # Link-time flags.
-LDFLAGS = -fopenmp -lgmp 
+LDFLAGS = -fopenmp 
 
 # Automatically generate object files based on the source files.
 OBJS = $(SRC_FILES:.cpp=.o)
