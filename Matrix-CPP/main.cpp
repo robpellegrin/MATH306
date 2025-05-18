@@ -44,16 +44,10 @@ int main(int argc, char *argv[]) {
   // Total duration
   auto duration = end - start;
 
-  // Convert to minutes (truncates to whole minutes)
-  auto minutes = std::chrono::duration_cast<std::chrono::minutes>(duration);
-
   // Convert to seconds and subtract to get the remainder
-  auto seconds = std::chrono::duration_cast<std::chrono::seconds>(  //
-      duration - minutes                                            //
-  );
+  auto seconds = std::chrono::duration_cast<std::chrono::seconds>(duration);
 
-  cout << "Elapsed time: " << minutes.count() << " minutes and "
-       << seconds.count() << " seconds" << endl;
+  cout << seconds.count() << endl;
 
   return 0;
 }
