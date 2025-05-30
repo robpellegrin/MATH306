@@ -1,3 +1,5 @@
+#![allow(dead_code)]
+
 /*!
  * -----------------------------------------------------------------------------
  * Matrix Multiplication in Rust (Serial, Threaded, and Rayon Parallel Versions)
@@ -7,7 +9,6 @@
  * Description : This program generates two random matrices with values between
  *               1 and 9, then performs matrix multiplication using:
  *               - A serial implementation
- *               - A multithreaded implementation using std::thread
  *               - A parallel implementation using the Rayon crate
  *
  * Dependencies:
@@ -17,6 +18,8 @@
  * -----------------------------------------------------------------------------
  */
 
+use std::env;
+use std::time::Instant;
 use rand::Rng; // For generating random numbers
 use rayon::prelude::*; // For parallel iteration using Rayon
 
@@ -77,27 +80,24 @@ fn print_matrix(matrix: &Matrix) {
 
 /// Main function demonstrating serial and parallel matrix multiplication.
 fn main() {
-    let rows = 25;
-    let cols = 25;
+    // Read matrix size from command line
+    let args: Vec<String> = env::args().collect();
+    let size: usize = if args.len() > 1 {
+        args[1].parse().expect("Please provide a valid integer for matrix size")
+    } else {
+        25 // default size
+    };
 
-    // Generate two random matrices A and B
-    let a = generate_matrix(rows, cols);
-    let b = generate_matrix(cols, rows); // Transpose dimension for valid multiplication
+    let a = generate_matrix(size, size);
 
-    // Print the generated matrices
-    println!("Matrix A:");
-    print_matrix(&a);
+    // Time serial multiplication
+    let start = Instant::now();
+    // let _result = rayon_parallel_multiply(&a, &a);
+    let _result = rayon_parallel_multiply(&a, &a);
+    let duration = start.elapsed();
 
-    println!("\nMatrix B:");
-    print_matrix(&b);
+    // Calculate total seconds with fraction
+    let total_seconds = duration.as_secs_f64().round();
+    println!("{:0}", total_seconds);
 
-    // Perform and print result of serial multiplication
-    let result_serial = serial_multiply(&a, &b);
-    println!("\nSerial Multiplication Result:");
-    print_matrix(&result_serial);
-
-    // Perform and print result of parallel multiplication using Rayon
-    let result_rayon = rayon_parallel_multiply(&a, &b);
-    println!("\nRayon Parallel Multiplication Result:");
-    print_matrix(&result_rayon);
 }
