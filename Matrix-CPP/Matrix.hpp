@@ -12,8 +12,6 @@
 #ifndef MATRIX_HPP
 #define MATRIX_HPP
 
-#include <gmpxx.h>
-
 #include <cstdint>
 #include <iostream>
 #include <vector>
